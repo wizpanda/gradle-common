@@ -1,4 +1,12 @@
 // region Release configuration
+buildscript {
+    dependencies {
+        classpath(group: 'org.jfrog.buildinfo', name: 'build-info-extractor-gradle', version: '4.+')
+    }
+}
+
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.artifactory'
 
 jar {
     exclude "com/wizpanda/UrlMappings**"

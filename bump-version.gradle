@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 tasks.register('version') {
     String currentVersion = project.version
     List<Integer> parts = currentVersion.tokenize(".")*.toInteger()

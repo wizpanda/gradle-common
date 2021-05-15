@@ -16,9 +16,9 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = "${pomName}"
-                description = "${pomDescription}"
-                url = "${pomURL}"
+                name = "${pomName}".toString()
+                description = "${pomDescription}".toString()
+                url = "${pomURL}".toString()
                 developers {
                     developer {
                         id = 'sagrawal31'
@@ -27,9 +27,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = "scm:git:git://github.com/${pomGitHubSlug}.git"
-                    developerConnection = "scm:git:ssh://github.com:wizpanda/kernel.git"
-                    url = "https://github.com/wizpanda/kernel/tree/main"
+                    connection = "scm:git:git://github.com/${pomGitHubSlug}.git".toString()
+                    developerConnection = "scm:git:ssh://github.com:wizpanda/kernel.git".toString()
+                    url = "https://github.com/${pomGitHubSlug}/tree/main".toString()
                 }
             }
         }
@@ -41,8 +41,8 @@ artifactory {
     publish {
         repository {
             repoKey = "default-maven-local"
-            username = "${wpArtifactoryUsername}"
-            password = "${wpArtifactoryPassword}"
+            username = "${wpArtifactoryUsername}".toString()
+            password = "${wpArtifactoryPassword}".toString()
         }
         defaults {
             publications('wpJFrogMaven')

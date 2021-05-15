@@ -1,0 +1,54 @@
+// region Release configuration
+
+jar {
+    exclude "com/wizpanda/UrlMappings**"
+}
+
+publishing {
+    publications {
+        wpJFrogMaven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = ${pomName}
+                description = ${pomDescription}
+                url = ${pomURL}
+                developers {
+                    developer {
+                        id = 'sagrawal31'
+                        name = 'Shashank Agrawal'
+                        email = 'creative@wizpanda.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/${pomGitHubSlug}.git"
+                    developerConnection = "scm:git:ssh://github.com:wizpanda/kernel.git"
+                    url = "https://github.com/wizpanda/kernel/tree/main"
+                }
+            }
+        }
+    }
+}
+
+artifactory {
+    contextUrl = "https://wizpanda.jfrog.io/artifactory"
+    publish {
+        repository {
+            repoKey = "default-maven-local"
+            username = "${wpArtifactoryUsername}"
+            password = "${wpArtifactoryPassword}"
+        }
+        defaults {
+            publications('wpJFrogMaven')
+            publishArtifacts = true
+        }
+    }
+}
+
+// endregion

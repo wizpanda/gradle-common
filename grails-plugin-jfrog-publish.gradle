@@ -16,9 +16,9 @@ publishing {
             artifact javadocJar
 
             pom {
-                name = ${pomName}
-                description = ${pomDescription}
-                url = ${pomURL}
+                name = "${pomName}"
+                description = "${pomDescription}"
+                url = "${pomURL}"
                 developers {
                     developer {
                         id = 'sagrawal31'

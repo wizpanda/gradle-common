@@ -11,7 +11,10 @@ buildscript {
 }
 
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.artifactory'
+
+// Have to reference the implementation-class as application by plugin id doesn't work in external build script 
+// check following issue: https://github.com/gradle/gradle/issues/1262
+apply plugin: org.jfrog.gradle.plugin.artifactory.ArtifactoryPlugin
 
 jar {
     exclude "com/wizpanda/UrlMappings**"

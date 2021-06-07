@@ -1,35 +1,37 @@
 import java.util.regex.Pattern
 
 tasks.register('version') {
-    String currentVersion = project.version
-    List<Integer> parts = currentVersion.tokenize(".")*.toInteger()
+    doLast {
+        String currentVersion = project.version
+        List<Integer> parts = currentVersion.tokenize(".")*.toInteger()
 
-    // Command line argument -DbumpType=major
-    String bumpType = System.getProperty("bumpType")
-    if (bumpType == "major") {
-        parts[0] = parts[0] + 1
-        parts[1] = 0
-        parts[2] = 0
-    } else if (bumpType == "minor") {
-        parts[1] = parts[1] + 1
-        parts[2] = 0
-    } else if (bumpType == "patch") {
-        parts[2] = parts[2] + 1
-    } else {
-        throw new IllegalArgumentException("bumpType argument can have only major, minor and patch")
+        // Command line argument -DbumpType=major
+        String bumpType = System.getProperty("bumpType")
+        if (bumpType == "major") {
+            parts[0] = parts[0] + 1
+            parts[1] = 0
+            parts[2] = 0
+        } else if (bumpType == "minor") {
+            parts[1] = parts[1] + 1
+            parts[2] = 0
+        } else if (bumpType == "patch") {
+            parts[2] = parts[2] + 1
+        } else {
+            throw new IllegalArgumentException("bumpType argument can have only major, minor and patch")
+        }
+
+        String newVersion = parts.join(".")
+        File buildGradleFile = new File("./build.gradle")
+        Pattern pattern = ~/\nversion (.*)\n/
+
+        buildGradleFile.text = buildGradleFile.text.replaceFirst(pattern, "\nversion \"${newVersion}\"\n")
+
+        exec { commandLine("git", "add", "build.gradle") }
+        exec { commandLine("git", "add", "CHANGELOG.md") }
+        exec { commandLine("git", "add", "README.md") }
+        exec { commandLine("git", "commit", "-m", "release: v${newVersion}") }
+        exec { commandLine("git", "tag", "-a", "v${newVersion}", "-m", "release: v${newVersion}") }
+        exec { commandLine("git", "push", "origin") }
+        exec { commandLine("git", "push", "origin", "--tags") }
     }
-
-    String newVersion = parts.join(".")
-    File buildGradleFile = new File("./build.gradle")
-    Pattern pattern = ~/\nversion (.*)\n/
-
-    buildGradleFile.text = buildGradleFile.text.replaceFirst(pattern, "\nversion \"${newVersion}\"\n")
-
-    exec { commandLine("git", "add", "build.gradle") }
-    exec { commandLine("git", "add", "CHANGELOG.md") }
-    exec { commandLine("git", "add", "README.md") }
-    exec { commandLine("git", "commit", "-m", "release: v${newVersion}") }
-    exec { commandLine("git", "tag", "-a", "v${newVersion}", "-m", "release: v${newVersion}") }
-    exec { commandLine("git", "push", "origin") }
-    exec { commandLine("git", "push", "origin", "--tags") }
 }

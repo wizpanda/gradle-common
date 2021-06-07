@@ -4,8 +4,8 @@ tasks.register('version') {
     String currentVersion = project.version
     List<Integer> parts = currentVersion.tokenize(".")*.toInteger()
 
-    // Command line argument -PbumpType=major
-    String bumpType = project.getProperty("bumpType")
+    // Command line argument -DbumpType=major
+    String bumpType = System.getProperty("bumpType")
     if (bumpType == "major") {
         parts[0] = parts[0] + 1
         parts[1] = 0
